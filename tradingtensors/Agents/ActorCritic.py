@@ -66,12 +66,12 @@ class Brain(object):
 
                     # Compute PG Loss
                     action_mask = tf.one_hot(self.action_history, self.n_actions, on_value=1.0, off_value=0.0)
-                    self.prob_under_policy = tf.reduce_sum(self.actor_output * action_mask, axis=1, keep_dims=True)
+                    self.prob_under_policy = tf.reduce_sum(self.actor_output * action_mask, axis=1, keepdims=True)
                     self.neglogp = - tf.log(self.prob_under_policy + 1e-13)
                     self.actor_loss = tf.stop_gradient(self.advantage) * self.neglogp
 
                     #Compute Entropy
-                    self.entropy = - tf.reduce_sum(self.actor_output * - tf.log(self.actor_output + 1e-13), axis=1, keep_dims=True)
+                    self.entropy = - tf.reduce_sum(self.actor_output * - tf.log(self.actor_output + 1e-13), axis=1, keepdims=True)
                     
                     #Total Policy Loss: Entropy * coefficient_regularization + pg_loss
                     self.policy_loss = tf.reduce_mean(COEF_REG* self.entropy + self.actor_loss)

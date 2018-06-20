@@ -9,6 +9,13 @@ from talib import ATR, BBANDS
 
 from ..settings.serverconfig import ID, INDICATORS_SETTINGS, RETURNS_BY_OPEN, TOKEN
 
+import json
+import datetime
+import time
+
+currentTime = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d_%H:%M:%S')
+
+
 '''to access OANDA API'''
 
 
@@ -57,8 +64,15 @@ class OandaHandler(object):
 
         #Make API call repeated 
         try:
-            response = requests.get(QUERY_URL, headers=DEFAULT_HEADERS, params=params).json()
+            #response = requests.get(QUERY_URL, headers=DEFAULT_HEADERS, params=params).json()
+            with open('data/history.1.json') as f:
+                response = json.load(f)
             received = response["candles"]
+            #pd.read_json(received).to_csv('history.csv', sep=',')
+            #with open('data/history {}.json'.format(currentTime), 'w') as outfile:
+            #    json.dump(response, outfile)
+            
+            
 
         except (RequestException, KeyError) as e:
             print ("Failed to retrieve instrument history from Oanda, {}".format(e))
@@ -106,7 +120,11 @@ class OandaHandler(object):
         }
         
         try:
-            response = requests.get(QUERY_URL, headers=DEFAULT_HEADERS, params=params).json()
+            with open('data/precision.json') as f:
+                response = json.load(f)
+            #response = requests.get(QUERY_URL, headers=DEFAULT_HEADERS, params=params).json()
+            #with open('data/precision {}.json'.format(currentTime), 'w') as outfile:
+            #    json.dump(response, outfile)
         except RequestException as e:
             print ("Error while retrieving instrument information: %s"%e)
             return None
