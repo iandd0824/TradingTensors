@@ -1,3 +1,5 @@
+import multiprocessing
+
 #Choose either Shared or Separate AC Network
 SHARED = False 
 
@@ -9,7 +11,7 @@ CRITIC_LAYER = [128]
 SHARED_LAYER = [128, 64]
 
 #Hyperparams
-NUM_WORKERS = 4
+NUM_WORKERS = multiprocessing.cpu_count()
 GAMMA = 0.99
 LEARNING_RATE = 0.001
 
