@@ -64,9 +64,10 @@ class OandaHandler(object):
 
         #Make API call repeated 
         try:
-            #response = requests.get(QUERY_URL, headers=DEFAULT_HEADERS, params=params).json()
-            with open('data/history.1.json') as f:
-                response = json.load(f)
+            response = requests.get(QUERY_URL, headers=DEFAULT_HEADERS, params=params).json()
+            #with open('data/EUR_USD_M15_history.json') as f:
+            #with open('data/history.1.json') as f:
+            #    response = json.load(f)
             received = response["candles"]
             #pd.read_json(received).to_csv('history.csv', sep=',')
             #with open('data/history {}.json'.format(currentTime), 'w') as outfile:
@@ -120,9 +121,9 @@ class OandaHandler(object):
         }
         
         try:
-            with open('data/precision.json') as f:
-                response = json.load(f)
-            #response = requests.get(QUERY_URL, headers=DEFAULT_HEADERS, params=params).json()
+            #with open('data/precision.json') as f:
+            #    response = json.load(f)
+            response = requests.get(QUERY_URL, headers=DEFAULT_HEADERS, params=params).json()
             #with open('data/precision {}.json'.format(currentTime), 'w') as outfile:
             #    json.dump(response, outfile)
         except RequestException as e:
@@ -208,7 +209,7 @@ class OandaHandler(object):
         tradeID = transaction['id']
         
         ENTRY_TIME = pd.to_datetime(entry_time).strftime("%Y/%m/%d %H:%M")
-        print("OANDA API: Successfully traded {} units of {} {}".format(UNITS, INSTRUMENT, ENTRY_TIME))
+        print("OANDA API: Successfully traded {} units of {} in {} {}".format(UNITS, INSTRUMENT, TYPE, ENTRY_TIME))
         return tradeID, entry_time, entry_price
 
     '''
@@ -335,7 +336,7 @@ class OandaHandler(object):
         responseJson = response.json()
         _time = responseJson["candles"][-1]["time"]
 
-        return pd.to_datetime(_time).to_datetime()
+        return pd.to_datetime(_time).to_pydatetime()
 
 #TRADE HISTORY?
         
